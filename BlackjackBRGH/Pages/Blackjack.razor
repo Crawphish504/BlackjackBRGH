@@ -4,11 +4,12 @@
 @using BlackjackBRGH.Models.Blackjack.Enums;
 @using BlackjackBRGH.Pages.Partials;
 
-<PageTitle Title="Blackjack" />
+@*<PageTitle Title="Blackjack" />*@
 
 @code {
 
     //-----Statistics---------
+
 
     private int currentCount = 0;
     private int dealerCount = 0;
@@ -115,7 +116,7 @@
         //Reset the game area
         state = GameState.NotStarted;
 
-        //Easter egg!
+        //You made too much money!
         if (player.Funds > 1000)
         {
             state = GameState.EscortedOut;
@@ -165,8 +166,7 @@
     {
         state = GameState.Payout;
         if (player.HasNaturalBlackjack && dealer.Score != 21)
-        {
-            Statistic.AddPlayerWin();
+        {            
             PlayerWinCount();
             //Player gets their bet back, plus 1.5 * the bet
             player.Change += player.Bet * 1.5M;
@@ -258,30 +258,29 @@
     } }
 
 <div class="row">
-
-    <div class="col-2">Player Wins: @playerCount</div>
-    <div class="col-2">Player Loses: @playerLCount</div>
+    <div class="col-3"><h5>Player Wins: @playerCount</h5></div>
+    <div class="col-3"><h5>Player Loses: @playerLCount</h5></div>
     @*<div class="col-2">Dealer Wins: @dealerCount</div>
-    <div class="col-2">Dealer Loses: @dealerLCount</div>*@
-    <div class="col-2">Push Count: @pushCount</div>
+        <div class="col-2">Dealer Loses: @dealerLCount</div>*@
+    <div class="col-3"><h5>Push Count: @pushCount</h5></div>
 </div>
 <div class="row">
-    <div class="col-2">
+    <div class="col-4">
         <div>
             @{ int cardCount = dealer.Deck.Count + 1; }
             @while (cardCount > 0)
             {
                 <div class="blackjack-drawdeck">
                     <img src="images/blackjack/cardBack.png" />
-                </div>cardCount -= 32;
+                </div>cardCount -= 12;
             }
         </div>
     </div>
 
-    <div class="col-5">
+    <div class="col-4">
         <BlackjackHand Cards="dealer.Cards" />
     </div>
-    <div class="col-2">
+    <div class="col-3">
         <BlackjackScore State="state" Player="dealer" />
     </div>
 </div>
@@ -339,10 +338,10 @@
         {
             <button class="btn btn-secondary" @onclick="(() => NewHand())">Keep Going!</button>}
     </div>
-    <div class="col-5">
+    <div class="col-4">
         <BlackjackHand Cards="player.Cards" />
     </div>
-    <div class="col-2">
+    <div class="col-3">
         <BlackjackScore State="state" Player="player" />
     </div>
 </div>
